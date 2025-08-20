@@ -1,0 +1,15 @@
+{
+    "@context": {
+        "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+    },
+    "@id": "oep-test-asset",
+    "properties": {
+        "name": "OEP Example Table (oep_table_example)",
+        "description": "This is an example table with OEMetadata for the OEP.",
+        "contenttype": "application/json"
+    },
+    "dataAddress": {
+        "type": "HttpData",
+        "baseUrl": "https://openenergyplatform.org/api/v0/schema/model_draft/tables/oep_table_example/rows"
+    }
+}
