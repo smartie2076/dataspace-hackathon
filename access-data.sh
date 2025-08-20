@@ -41,6 +41,11 @@ echo "Start negotiation with producer $target_asset_participant_id of asset $tar
 
 url_negotiation="$url_controlplane/api/management/v3/contractnegotiations"
 
+# Update negotation according to requested data
+python -c "import json, sys; data=json.load(open('contract-negotiation.json')); data['counterPartyAddress']=sys.argv[1]; data['policy']['@id']=sys.argv[2]; data['policy']['target']=sys.argv[3]; data['policy']['assigner']=sys.argv[4]; json.dump(data, open('contract-negotiation.json', 'w'), indent=4)" "$target_asset_originator" "$target_asset_policy_handle" "$target_asset_id" "$target_asset_participant_id"
+
+
+# This negotiation/offer will have a NEW ID every time the code is executed
 curl -X POST $url_negotiation \
     -H "Content-Type: application/json"                                       \
     -H "x-api-key: $api_key"                                             \
