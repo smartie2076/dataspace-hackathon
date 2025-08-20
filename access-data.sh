@@ -20,7 +20,26 @@ curl -X POST $url_catalog_query \
 
 target_asset_id='openmeter-measurements-by-sensorid'
 target_asset_participant_id='fraunhofer-iee'
-target_asset
-echo
+target_asset_originator='https://fhiee-controlplane.hackathon.future-energy-dialog.de/api/v1/dsp'
+target_asset_policy_handle='YWxs:b3Blbm1ldGVyLW1lYXN1cmVtZW50cy1ieS1zZW5zb3JpZA==:NDI5Yjk3NzYtNTYwNC00NTM0LTkzMDEtY2Y2ODZhZjE4ZDkw'
+
+echo "Start negotiation with producer $target_asset_participant_id of asset $target_asset_id"
+
+url_negotiation="$url_controlplane/api/management/v3/contractnegotiations"
+
+curl -X POST $url_negotiation \
+    -H "Content-Type: application/json"                                       \
+    -H "x-api-key: $api_key"                                             \
+    -d @contract-negotiation.json > negotiation.json
+
+
+sleep 20
+
+negotiation_id=$(python -c "import json; print(json.load(open('negotiation.json'))['@id'])" )
+echo "Negotiations are started with ID $negotiation_id"
+
+curl -X GET $url_negotiation/$negotiation_id \
+    -H "Content-Type: application/json"                                                                         \
+    -H "x-api-key: $api_key"  | python -mjson.tool
 
 read -p "Press enter to continue"
