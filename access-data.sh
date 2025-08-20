@@ -1,4 +1,6 @@
 #!/bin/usr/env bash
+
+# Definition of variables
 user='reinersDatenzentrum'
 id_connector='reiners-datenzentrum'
 url_controlplane='https://reinersdatzen-controlplane.hackathon.future-energy-dialog.de'
@@ -9,10 +11,12 @@ api_key='TrBp2qPJewwjVAjxlIOj'
 login="User: $a, ID: $id_connector, URL Control: $url_controlplane"
 echo $login
 
+# Challenge 4
 url_catalog_query="$url_controlplane/api/catalog/v1alpha/catalog/query"
 
 echo "Access all available data (or rather, 25 items): $url_catalog_query"
 
+# Get data of catalogue, change full-catalog-request.json to get more entries
 curl -X POST $url_catalog_query \
     -H "Content-Type: application/json"                                  \
     -H "x-api-key: $api_key"                                        \
@@ -32,12 +36,15 @@ curl -X POST $url_negotiation \
     -H "x-api-key: $api_key"                                             \
     -d @contract-negotiation.json > negotiation.json
 
+# Processing time on server necessary
+sleep 10
 
 sleep 20
 
 negotiation_id=$(python -c "import json; print(json.load(open('negotiation.json'))['@id'])" )
 echo "Negotiations are started with ID $negotiation_id"
 
+# See if contract is confirmed
 curl -X GET $url_negotiation/$negotiation_id \
     -H "Content-Type: application/json"                                                                         \
     -H "x-api-key: $api_key"  | python -mjson.tool
