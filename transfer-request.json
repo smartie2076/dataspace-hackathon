@@ -5,7 +5,7 @@
     "@type": "TransferRequestDto",
     "connectorId": "offis",
     "counterPartyAddress": "https://offis-controlplane.hackathon.future-energy-dialog.de/api/v1/dsp",
-    "contractId": "1fd69812-aa9c-4638-be25-ad7a88bbca14",
+    "contractId": "9a192378-34e7-48c5-b66e-2e44db7aae59",
     "protocol": "dataspace-protocol-http",
     "transferType": "HttpData-PULL"
 }

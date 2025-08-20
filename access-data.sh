@@ -37,7 +37,7 @@ target_asset_originator='https://offis-controlplane.hackathon.future-energy-dial
 #target_asset_originator='https://fhiee-controlplane.hackathon.future-energy-dialog.de/api/v1/dsp'
 #target_asset_policy_handle='YWxs:b3Blbm1ldGVyLW1lYXN1cmVtZW50cy1ieS1zZW5zb3JpZA==:NDI5Yjk3NzYtNTYwNC00NTM0LTkzMDEtY2Y2ODZhZjE4ZDkw'
 
-echo "Start negotiation with producer $target_asset_participant_id of asset $target_asset_id"
+echo -e "\nStart negotiation with producer $target_asset_participant_id of asset $target_asset_id"
 
 url_negotiation="$url_controlplane/api/management/v3/contractnegotiations"
 
@@ -59,7 +59,7 @@ negotiation_id=$(python -c "import json; print(json.load(open('negotiation.json'
 echo "Negotiations are started with ID (Challenge 4) $negotiation_id"
 
 # See if contract is confirmed
-curl -X GET $url_negotiation/$negotiation_id \
+curl -X GET "$url_negotiation/$negotiation_id" \
     -H "Content-Type: application/json"                                                                         \
     -H "x-api-key: $api_key"  > negotiation_agreement.json
 
@@ -88,20 +88,21 @@ curl -X POST $url_transfer    \
 transfer_process_id=$(python -c "import json; print(json.load(open('transfer_process.json'))['@id'])" )
 
 # Check if transfer process status is "Started"
-curl -X GET $url_transfer/$transfer_process_id \
+curl -X GET "$url_transfer/$transfer_process_id" \
     -H "Content-Type: application/json"                                                                        \
     -H "x-api-key: $api_key" > transfer_process.json
 
 status=$(python -c "import json; print(json.load(open('transfer_process.json'))['state'])")
-echo "Transfer process status: $status"
+echo "Transfer process status: $status (ID: $transfer_process_id)"
 
 # Access transfer status regularly until process finished
 counter=0
-while [ "$status" != "FINALIZED" ]
+while [ "$status" != "STARTED" ]
+#while [ "$status" != "FINALIZED" ]
 do
     # Processing time on server necessary
     sleep 30
-    curl -X GET $url_transfer/$transfer_process_id \
+    curl -X GET "$url_transfer/$transfer_process_id" \
         -H "Content-Type: application/json"                                                                        \
         -H "x-api-key: $api_key" > transfer_process.json
     status=$(python -c "import json; print(json.load(open('transfer_process.json'))['state'])")
@@ -112,12 +113,17 @@ done
 echo "Time until status finished: $counter*30 Seconds"
 
 # Access information to fetch data
-curl -X GET $url_transfer/$transfer_process_id/dataaddress \
+curl -X GET "$url_controlplane/api/management/v3/edrs/$transfer_process_id/dataaddress" \
     -H "Content-Type: application/json"                                                                       \
     -H "x-api-key: $api_key" > transfer_adress.json
 
-curl -X GET https://dataplane.../api/v2/public                         \
+url_endpoint=$(python -c "import json; print(json.load(open('transfer_adress.json'))['endpoint'])")
+url_auth=$(python -c "import json; print(json.load(open('transfer_adress.json'))['authorization'])")
+
+curl -X GET $url_endpoint                        \
     -H "Content-Type: application/json"                                  \
-    -H "Authorization: eyJraWQiOiJ2ZXJpZmllci1rZXkiLC...KP3tMbXWx7Q98wg"
+    -H "Authorization: $url_auth" > data.json
+
+echo -e "The data $target_asset_id of provider $target_asset_originator has successfully been stored in data.json (Challenge 5 completed)."
 
 read -p "Press enter to continue"
