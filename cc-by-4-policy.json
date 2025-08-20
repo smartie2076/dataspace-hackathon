@@ -1,0 +1,34 @@
+{
+    "@context": {
+        "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+    },
+    "@id": "cc-by-4",
+    "policy": {
+        "@context": "http://www.w3.org/ns/odrl.jsonld",
+        "@type": "Set",
+        "permission": [
+            {
+                "target": "http://example.com/dataset",
+                "action": [
+                    "use",
+                    "reproduce",
+                    "distribute",
+                    "modify",
+                    "derive"
+                ]
+            }
+        ],
+        "prohibition": [],
+        "obligation": [
+            {
+                "action": "attribution",
+                "assignee": "http://example.com/user",
+                "constraint": {
+                    "leftOperand": "attribution",
+                    "operator": "eq",
+                    "rightOperand": "mustGiveCreditToOriginalCreator"
+                }
+            }
+        ]
+    }
+}
