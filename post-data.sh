@@ -9,8 +9,7 @@ api_key='TrBp2qPJewwjVAjxlIOj'
 login="User: $a, ID: $id_connector, URL Control: $url_controlplane"
 echo $login
 
-asset_name='my-asset'
-url_asset="$url_controlplane/api/management/v3/$asset_name"
+url_asset="$url_controlplane/api/management/v3/assets"
 
 echo "Post onto $url_asset"
 
@@ -21,7 +20,10 @@ curl -X POST $url_asset \
 
 echo "Check post"
 
-curl -X GET $url_asset \
+id_asset="my-asset"
+url_asset_id="$url_asset/$id_asset"
+
+curl -X GET $url_asset_id \
     -H "x-api-key: $api_key"
 
 read -p "Press enter to continue"
