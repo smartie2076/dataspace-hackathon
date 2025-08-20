@@ -54,14 +54,70 @@ curl -X POST $url_negotiation \
 # Processing time on server necessary
 sleep 10
 
-sleep 20
-
+# Access negotiation ID to later ask for updates
 negotiation_id=$(python -c "import json; print(json.load(open('negotiation.json'))['@id'])" )
-echo "Negotiations are started with ID $negotiation_id"
+echo "Negotiations are started with ID (Challenge 4) $negotiation_id"
 
 # See if contract is confirmed
 curl -X GET $url_negotiation/$negotiation_id \
     -H "Content-Type: application/json"                                                                         \
-    -H "x-api-key: $api_key"  | python -mjson.tool
+    -H "x-api-key: $api_key"  > negotiation_agreement.json
+
+# Get contract ID
+negotiation_agreement_id=$(python -c "import json; print(json.load(open('negotiation_agreement.json'))['contractAgreementId'])" )
+
+echo -e "Negotiations are finalized with contract ID (Challenge 4) $negotiation_agreement_id\n"
+
+# Challenge 5
+
+echo "Update transfer-request.json according to contract"
+# Access id of negotiation/contract from previous response, update template transfer-request.json
+python -c "import json, sys; data=json.load(open('transfer-request.json')); data['contractId']=sys.argv[1]; json.dump(data, open('transfer-request.json', 'w'), indent=4)" "$negotiation_agreement_id"
+
+url_transfer="$url_controlplane/api/management/v3/transferprocesses"
+
+# update transfer request according to requested data
+python -c "import json, sys; data=json.load(open('transfer-request.json')); data['counterPartyAddress']=sys.argv[1]; data['connectorId']=sys.argv[2]; json.dump(data, open('transfer-request.json', 'w'), indent=4)" "$target_asset_originator" "$target_asset_participant_id"
+
+# initalize transfer process
+curl -X POST $url_transfer    \
+    -H "Content-Type: application/json"                                       \
+    -H "x-api-key: $api_key"                                             \
+    -d @transfer-request.json > transfer_process.json
+
+transfer_process_id=$(python -c "import json; print(json.load(open('transfer_process.json'))['@id'])" )
+
+# Check if transfer process status is "Started"
+curl -X GET $url_transfer/$transfer_process_id \
+    -H "Content-Type: application/json"                                                                        \
+    -H "x-api-key: $api_key" > transfer_process.json
+
+status=$(python -c "import json; print(json.load(open('transfer_process.json'))['state'])")
+echo "Transfer process status: $status"
+
+# Access transfer status regularly until process finished
+counter=0
+while [ "$status" != "FINALIZED" ]
+do
+    # Processing time on server necessary
+    sleep 30
+    curl -X GET $url_transfer/$transfer_process_id \
+        -H "Content-Type: application/json"                                                                        \
+        -H "x-api-key: $api_key" > transfer_process.json
+    status=$(python -c "import json; print(json.load(open('transfer_process.json'))['state'])")
+    echo "... $status"
+    ((counter++))
+done
+
+echo "Time until status finished: $counter*30 Seconds"
+
+# Access information to fetch data
+curl -X GET $url_transfer/$transfer_process_id/dataaddress \
+    -H "Content-Type: application/json"                                                                       \
+    -H "x-api-key: $api_key" > transfer_adress.json
+
+curl -X GET https://dataplane.../api/v2/public                         \
+    -H "Content-Type: application/json"                                  \
+    -H "Authorization: eyJraWQiOiJ2ZXJpZmllci1rZXkiLC...KP3tMbXWx7Q98wg"
 
 read -p "Press enter to continue"
