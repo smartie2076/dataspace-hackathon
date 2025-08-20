@@ -1,0 +1,7 @@
+{
+    "@context": {
+        "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+    },
+    "counterPartyAddress": "https://reinersdatzen-controlplane.hackathon.future-energy-dialog.de/api/v1/dsp",
+    "protocol": "dataspace-protocol-http"
+}
