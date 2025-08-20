@@ -20,7 +20,10 @@ echo "Access all available data (or rather, 25 items): $url_catalog_query"
 curl -X POST $url_catalog_query \
     -H "Content-Type: application/json"                                  \
     -H "x-api-key: $api_key"                                        \
-    -d @full-catalog-request.json | python -mjson.tool
+    -d @full-catalog-request.json > data_catalog.json
+
+# pretty print to file
+python -c "import json; data=json.load(open('data_catalog.json')); json.dump(data, open('data_catalog.json', 'w'), indent=4)"
 
 target_asset_id='openmeter-measurements-by-sensorid'
 target_asset_participant_id='fraunhofer-iee'
