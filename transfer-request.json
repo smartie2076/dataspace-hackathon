@@ -1,0 +1,11 @@
+{
+    "@context": {
+        "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+    },
+    "@type": "TransferRequestDto",
+    "connectorId": "offis",
+    "counterPartyAddress": "https://offis-controlplane.hackathon.future-energy-dialog.de/api/v1/dsp",
+    "contractId": "9a192378-34e7-48c5-b66e-2e44db7aae59",
+    "protocol": "dataspace-protocol-http",
+    "transferType": "HttpData-PULL"
+}
