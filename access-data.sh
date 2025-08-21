@@ -26,16 +26,17 @@ curl -X POST $url_catalog_query \
 python -c "import json; data=json.load(open('data_catalog.json')); json.dump(data, open('data_catalog.json', 'w'), indent=4)"
 
 # Hand-copied from interesting entries! This entries are not changing.
+# Data on generation capacities per community
 target_asset_id='mastr-geodata-asset'
 target_asset_participant_id='offis'
 target_asset_policy_handle='bGV0enRlcy1hbmdlYm90:bWFzdHItZ2VvZGF0YS1hc3NldA==:ODVjY2I0OTEtZGMyZC00MzVkLTg1YzAtNmFiNGUyZDMwNDEy'
 target_asset_originator='https://offis-controlplane.hackathon.future-energy-dialog.de/api/v1/dsp'
 
-# This dataset was too big and took a very long time to transfer
-#target_asset_id='openmeter-measurements-by-sensorid'
-#target_asset_participant_id='fraunhofer-iee'
-#target_asset_originator='https://fhiee-controlplane.hackathon.future-energy-dialog.de/api/v1/dsp'
-#target_asset_policy_handle='YWxs:b3Blbm1ldGVyLW1lYXN1cmVtZW50cy1ieS1zZW5zb3JpZA==:NDI5Yjk3NzYtNTYwNC00NTM0LTkzMDEtY2Y2ODZhZjE4ZDkw'
+# Household-level demand data, not working
+# target_asset_id='openmeter-measurements-by-sensorid'
+# target_asset_participant_id='fraunhofer-iee'
+# target_asset_originator='https://fhiee-controlplane.hackathon.future-energy-dialog.de/api/v1/dsp'
+# target_asset_policy_handle='YWxs:b3Blbm1ldGVyLW1lYXN1cmVtZW50cy1ieS1zZW5zb3JpZA==:NDI5Yjk3NzYtNTYwNC00NTM0LTkzMDEtY2Y2ODZhZjE4ZDkw'
 
 echo -e "\nStart negotiation with producer $target_asset_participant_id of asset $target_asset_id"
 
