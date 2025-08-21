@@ -23,7 +23,7 @@ curl -X POST $url_asset \
 
 echo "Check post (finalization Challenge 1)"
 
-id_asset="my-asset"
+id_asset="data-office-processed"
 url_asset_id="$url_asset/$id_asset"
 
 curl -X GET $url_asset_id \
@@ -61,6 +61,6 @@ echo "Check correct setup of asset, policy and offer (finalization Challenge 3):
 curl -X POST $url_catalog_request \
     -H "Content-Type: application/json"                                  \
     -H "x-api-key: $api_key"                                        \
-    -d @catalog-request.json
+    -d @catalog-request.json | python -mjson.tool
 
 read -p "Press enter to continue"

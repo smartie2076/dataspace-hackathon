@@ -1,0 +1,15 @@
+{
+    "@context": {
+        "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+    },
+    "@id": "oep-metadata",
+    "properties": {
+        "name": "OEP Metadata",
+        "description": "OEMetadata standard, use with all OEP data sets",
+        "contenttype": "application/json"
+    },
+    "dataAddress": {
+        "type": "HttpData",
+        "baseUrl": "https://openenergyplatform.org/api/v0/schema/model_draft/tables/oep_table_example/meta/"
+    }
+}

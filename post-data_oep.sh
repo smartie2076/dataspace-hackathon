@@ -39,11 +39,31 @@ curl -X POST $url_policy \
     -H "x-api-key: $api_key"                                          \
     -d @cc-by-4-policy.json
 
-url_policy_id="$url_policy/all"
+url_policy_id="$url_policy/cc-by-4"
 
 echo "Check policy (finalization Challenge 2): $url_policy_id"
 
 curl -X GET $url_policy_id \
     -H "x-api-key: $api_key"
+
+url_offer="$url_controlplane/api/management/v3/contractdefinitions"
+
+echo "Create offer: $url_offer"
+
+echo "Add offer: $url_offer"
+
+curl -X POST $url_offer \
+    -H "Content-Type: application/json"                                    \
+    -H "x-api-key: $api_key"                                          \
+    -d @oep-asset-offer.json
+
+url_catalog_request="$url_controlplane/api/management/v3/catalog/request"
+
+echo "Check correct setup of asset, policy and offer (finalization Challenge 3): $url_catalog_request"
+
+curl -X POST $url_catalog_request \
+    -H "Content-Type: application/json"                                  \
+    -H "x-api-key: $api_key"                                        \
+    -d @catalog-request.json | python -mjson.tool
 
 read -p "Press enter to continue"
