@@ -23,3 +23,5 @@ ax.set_xlabel("Latitude")
 ax.set_ylabel("Longitude")
 plt.savefig('./datamap-offis-nennleistung-kW.png', bbox_inches="tight")
 plt.close()
+
+max_res.to_file('data-office-nennleistung.geojson', driver='GeoJSON')

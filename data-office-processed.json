@@ -1,0 +1,15 @@
+{
+    "@context": {
+        "@vocab": "https://w3id.org/edc/v0.0.1/ns/"
+    },
+    "@id": "data-office-processed",
+    "properties": {
+        "name": "Wind-Solar-Gemeinde",
+        "description": "Geojson file zur Nennleistung von Wind und Solar in Deutschen Gemeinden, in kW",
+        "contenttype": "application/json"
+    },
+    "dataAddress": {
+        "type": "HttpData",
+        "baseUrl": "https://github.com/smartie2076/dataspace-hackathon/blob/master/data-office-nennleistung.geojson"
+    }
+}
