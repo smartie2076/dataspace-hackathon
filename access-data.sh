@@ -1,12 +1,14 @@
 #!/bin/usr/env bash
 
 # Definition of variables
-user='reinersDatenzentrum'
-id_connector='reiners-datenzentrum'
-url_controlplane='https://reinersdatzen-controlplane.hackathon.future-energy-dialog.de'
-url_dataplane='https://reinersdatzen-dataplane.hackathon.future-energy-dialog.de'
-url_dsp='https://reinersdatzen-controlplane.hackathon.future-energy-dialog.de/api/v1/dsp'
-api_key='TrBp2qPJewwjVAjxlIOj'
+source ./config.sh
+
+echo "user: $user"
+echo "id_connector: $id_connector"
+echo "url_controlplane: $url_controlplane"
+echo "url_dataplane: $url_dataplane"
+echo "url_dsp: $url_dsp"
+echo "api_key: $api_key"
 
 login="User: $a, ID: $id_connector, URL Control: $url_controlplane"
 echo $login
